@@ -1,12 +1,14 @@
 """
-Contains the ControllerNSV class.
-Parts taken from example in azcam for controller_archon.py which was originally written by Grzegorz Zareba.
+Contains the ControllerNSV class
+Parts taken from example in azcam for controller_archon.py which was originally written by Grzegorz Zareba
+DRAFTING / NOT DONE / MAINLY PIECING STRUCTURE TOGETHER- SFR
+Contains notes to self / ignore
 """
 
 import socket
 import time
 import threading
-
+# Note- do we also want to use pyrav412 like in camera.py with the sockets or just have it similar to azcam? - SFR
 import azcam
 import azcam.utils
 import azcam.exceptions
@@ -14,6 +16,7 @@ import azcam.sockets
 from azcam.tools.controller import Controller
 
 # ------- power management (adapted from NSV code) --------
+# From camera.py for reference
 
 cmd = {'on':0x90, 'off':0x80}
 bus = {'1':0x08, '2': 0x08,
@@ -23,7 +26,7 @@ addr = {'1':0x02bf, '2':0x02b0,
         '3':0x02bf, '4':0x02b0,
         '5':0x02bf, '6':0x02b0}
 
-
+# Mainly based / pulled from archon example which uses sockets.
 class ControllerNSV(Controller):
     """
     The controller class for cameras using NSV.
@@ -60,31 +63,23 @@ class ControllerNSV(Controller):
         self.cam = None
         self.width = None
         self.height = None
-
         self.gain = None
         self.exptime = None
         self.blacklevel = None
         self.vcropoffset = None
-
         self.is_connected = False
-
         self.dpath = dpath
 
         # power on
         self.power_on()
-
         # set mode
         self.set_mode(mode)
-
-        # do not initialize this controller type
+        # do not initialize this controller type <Potentially will remove this- SFR>
         azcam.db.tools_init.pop("controller", None)
-
         # azcam connected to the controller
         self.connected_controller = 0
-
         # reset flag
         self.reset_flag = 0  # 0 for soft reset, 1 to upload code
-
         # receiving raw data
         self.rawdata_enable = 0
         # Raw channel - in the config dictionary raw channel numbers start from 0
@@ -95,14 +90,14 @@ class ControllerNSV(Controller):
         #: lock for threads
         self.lock = threading.Lock()
 
-        # controller server
+        # controller server <Need to make adjustments potentially- SFR>
         self.camserver = azcam.sockets.SocketInterface()
         self.camserver.host = ""
         self.camserver.port = 4242
         self.camserver.cmd_id = 0x00
         self.camserver.lastcmd_id = 0x00
 
-    # Keeping same as controller_archon.py
+    # Keeping similar as controller_archon.py for now. SFR
     def initialize(self):
         """
         Initializes the NSV controller.
@@ -248,7 +243,6 @@ class ControllerNSV(Controller):
         :param time: exposure time (secs) value
         :return:
         """
-        time = float(time)
-        msec
+        return
 
 
